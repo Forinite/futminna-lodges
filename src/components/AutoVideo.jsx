@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 // Muted looping video, no controls, plays only while visible.
-export default function AutoVideo({ src, className }) {
+export default function AutoVideo({ src }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -18,18 +18,8 @@ export default function AutoVideo({ src, className }) {
     return () => io.disconnect();
   }, [src]);
 
-  if (!src) return <div className={`video-empty ${className ?? ""}`}>No footage yet</div>;
+  const box = "block aspect-[4/3] w-full bg-[#222] object-cover";
+  if (!src) return <div className={`${box} grid place-items-center text-[0.9rem] text-[#aaa]`}>No footage yet</div>;
 
-  return (
-    <video
-      ref={ref}
-      className={className}
-      src={src}
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      disablePictureInPicture
-    />
-  );
+  return <video ref={ref} className={box} src={src} muted loop playsInline preload="metadata" disablePictureInPicture />;
 }
