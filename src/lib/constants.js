@@ -1,9 +1,9 @@
 export const AGENT = {
   name: "Obe Fortune",
-  phone: "0800 000 0000",          // TODO: real number
-  whatsapp: "0800 000 0000",       // TODO: real number
-  whatsappIntl: "2348000000000",   // digits only, with country code, for wa.me links
-  callHref: "tel:+2348000000000",
+  phone: "0816 983 5641",          // TODO: real number
+  whatsapp: "0816 983 5641",       // TODO: real number
+  whatsappIntl: "2348169835641",   // digits only, with country code, for wa.me links
+  callHref: "tel:+2348169835641",
 };
 
 
@@ -31,3 +31,5 @@ export const statusRank = (s) => STATUSES.findIndex((x) => x.key === s);
 export const hasStat = (lodge, name) =>
   (lodge.stats ?? []).some((s) => s.available && s.name.toLowerCase() === String(name).toLowerCase());
 export const premiumStats = (lodge) => (lodge.stats ?? []).filter((s) => s.status === "premium" && s.available);
+
+export const VIDEO_BUCKET = "lodge-videos";

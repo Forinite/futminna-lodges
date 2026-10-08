@@ -1,4 +1,5 @@
 // Small shared building blocks. Their Tailwind styling lives in this file.
+// Rule: never pass a class that fights one already in the base (e.g. a second border colour); use the props instead.
 export const cx = (...a) => a.filter(Boolean).join(" ");
 
 export const selectCls = "min-h-11 rounded-lg border border-line bg-white px-3 py-2 font-medium";
@@ -19,8 +20,10 @@ export function Btn({ as: Tag = "button", variant = "default", size = "md", clas
   return <Tag className={cx(BTN, VARIANTS[variant], SIZES[size], className)} {...props} />;
 }
 
-export function Panel({ className, ...props }) {
-  return <div className={cx("rounded-[14px] border border-line bg-white p-5", className)} {...props} />;
+const PANEL_BORDER = { default: "border border-line", green: "border-2 border-green", premium: "border-2 border-premium" };
+const PANEL_PAD = { md: "p-5", sm: "px-4 py-3.5", xs: "p-3.5" };
+export function Panel({ accent = "default", pad = "md", className, ...props }) {
+  return <div className={cx("rounded-[14px] bg-white", PANEL_BORDER[accent], PANEL_PAD[pad], className)} {...props} />;
 }
 
 const TAGS = {
@@ -30,22 +33,23 @@ const TAGS = {
   premium: "border-premium bg-premium text-white",
   sold: "border-transparent bg-sold-soft text-sold",
 };
-export function Tag({ tone = "plain", className, ...props }) {
-  return <span className={cx("rounded-md border px-2 py-0.5 text-xs font-bold", TAGS[tone], className)} {...props} />;
+export function Tag({ tone = "plain", pill = false, className, ...props }) {
+  return <span className={cx("border py-0.5 text-xs font-bold", pill ? "rounded-full px-2.5" : "rounded-md px-2", TAGS[tone], className)} {...props} />;
 }
 
 export function LinkBtn({ className, ...props }) {
   return <button type="button" className={cx("cursor-pointer underline disabled:cursor-default disabled:no-underline disabled:opacity-50", className)} {...props} />;
 }
 
-// Chip coloured by stat status: essential = silver, convenient = gold, premium = purple
+// Stat chip coloured by status: essential = silver, convenient = gold, premium = purple.
+// Selected: the border colour becomes the background and the text turns white.
 const CHIP = {
-  essential: ["border-silver text-[#4b555c]", "border-silver bg-silver text-white"],
-  convenient: ["border-gold-line text-gold", "border-gold-line bg-gold-line text-white"],
-  premium: ["border-premium text-premium", "border-premium bg-premium text-white"],
+  essential: ["border-silver bg-white text-[#4b555c]", "border-silver bg-silver text-white"],
+  convenient: ["border-gold-line bg-white text-gold", "border-gold-line bg-gold-line text-white"],
+  premium: ["border-premium bg-white text-premium", "border-premium bg-premium text-white"],
 };
 export const statChip = (status, on) =>
-  cx("cursor-pointer rounded-full border bg-white px-3.5 py-1.5 text-[0.85rem]", (CHIP[status] ?? CHIP.essential)[on ? 1 : 0]);
+  cx("cursor-pointer rounded-full border px-3.5 py-1.5 text-[0.85rem]", (CHIP[status] ?? CHIP.essential)[on ? 1 : 0]);
 
 export function Modal({ label, onClose, children }) {
   return (

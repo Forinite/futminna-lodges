@@ -7,6 +7,7 @@ import { useAuth } from "../lib/AuthContext.jsx";
 import RequestModal from "../components/RequestModal.jsx";
 import AuthModal from "../components/AuthModal.jsx";
 import StatList from "../components/StatList.jsx";
+import CopyLinkButton from "../components/CopyLinkButton.jsx";
 import { Btn, Panel, Tag, cx } from "../components/ui.jsx";
 
 const PBTN = "flex size-11 items-center justify-center rounded-full border border-line bg-white text-[1.4rem] leading-none no-underline";
@@ -31,6 +32,14 @@ export default function LodgeDetail() {
   const [mine, setMine] = useState(null);       // this user's active booking on this lodge
   const [connect, setConnect] = useState(null); // agent contact info, once the admin allows it
   const [fallbackIds, setFallbackIds] = useState([]);
+
+  // Browser tab / history title follows the lodge (the shared-link tags are added server-side)
+  useEffect(() => {
+    if (!lodge) return;
+    const prev = document.title;
+    document.title = `${lodgeTitle(lodge)}: ${lodge.name}${lodge.location ? " in " + lodge.location : ""} | Futminna Lodges`;
+    return () => { document.title = prev; };
+  }, [lodge]);
 
   // If the page was opened directly (not from Browse), step through all lodges instead.
   const inList = listIds.includes(id);
@@ -145,20 +154,21 @@ export default function LodgeDetail() {
         <div className="grid gap-5">
           <div>
             <div className="flex flex-wrap gap-1.5">
-              {premium.map((p) => <Tag key={p.name} tone="premium" className="rounded-full px-2.5">{p.name}</Tag>)}
+              {premium.map((p) => <Tag key={p.name} tone="premium" pill>{p.name}</Tag>)}
               {full
-                ? <Tag tone="booked" className="rounded-full px-2.5">Fully booked</Tag>
-                : <Tag tone="free" className="rounded-full px-2.5">{lodge.units_available} available</Tag>}
-              {lodge.sold_count > 0 && <Tag tone="sold" className="rounded-full px-2.5">{lodge.sold_count} sold</Tag>}
+                ? <Tag tone="booked" pill>Fully booked</Tag>
+                : <Tag tone="free" pill>{lodge.units_available} available</Tag>}
+              {lodge.sold_count > 0 && <Tag tone="sold" pill>{lodge.sold_count} sold</Tag>}
             </div>
             <h1 className="mt-2.5 font-display text-[1.9rem] leading-tight md:text-[2.3rem]">{title}</h1>
             <p className={muted}>
               {lodge.lodge_name ? `${lodge.name} · ` : ""}{lodge.location ? `${lodge.location} · ` : ""}
               {lodge.rooms} room{lodge.rooms > 1 ? "s" : ""} · {lodge.interest_count} interested
             </p>
+            <CopyLinkButton className="mt-3" url={`${window.location.origin}/lodge/${lodge.id}`} />
           </div>
 
-          <Panel className="flex items-center gap-4 px-4 py-3.5">
+          <Panel pad="sm" className="flex items-center gap-4">
             <div className="min-w-9 text-center font-display text-[2.4rem] font-extrabold leading-none">{lodge.units_available}</div>
             <div>
               <strong>{lodge.units_available === 1 ? "apartment" : "apartments"} available</strong>
@@ -201,7 +211,7 @@ export default function LodgeDetail() {
         </Panel>
 
         {mine ? (
-          <Panel className="flex flex-col justify-between gap-4 border-2 border-green">
+          <Panel accent="green" className="flex flex-col justify-between gap-4">
             <div>
               <h3 className={h3}>You've booked this lodge</h3>
               <p className={muted}>
@@ -220,7 +230,7 @@ export default function LodgeDetail() {
             </div>
           </Panel>
         ) : (
-          <Panel className={cx("flex flex-col justify-between gap-4", !full && "border-2 border-green")}>
+          <Panel accent={full ? "default" : "green"} className="flex flex-col justify-between gap-4">
             <div>
               <h3 className={h3}>{full ? "Fully booked" : "Ready to take it? Book"}</h3>
               <p className={muted}>
