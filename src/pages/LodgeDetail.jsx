@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../lib/supabase.js";
-import { AGENT, naira, lodgeTitle, waNumber, premiumStats } from "../lib/constants.js";
+import { AGENT, naira, waNumber, premiumStats } from "../lib/constants.js";
 import { useLodgeList } from "../lib/LodgeListContext.jsx";
 import { useAuth } from "../lib/AuthContext.jsx";
 import RequestModal from "../components/RequestModal.jsx";
@@ -37,7 +37,7 @@ export default function LodgeDetail() {
   useEffect(() => {
     if (!lodge) return;
     const prev = document.title;
-    document.title = `${lodgeTitle(lodge)}: ${lodge.name}${lodge.location ? " in " + lodge.location : ""} | Futminna Lodges`;
+    document.title = `${lodge.name} | Futminna Lodges`;
     return () => { document.title = prev; };
   }, [lodge]);
 
@@ -93,7 +93,7 @@ export default function LodgeDetail() {
   if (missing) return <p className="py-8 text-muted">Lodge not found. <Link to="/" className="underline">Back to all lodges</Link></p>;
   if (!lodge || lodge.id !== id) return <p className="py-8 text-muted">Loading…</p>;
 
-  const title = lodgeTitle(lodge);
+  const title = lodge.name; // public pages never show the lodge's own name
   const waText = encodeURIComponent(`Hello, I'm interested in "${title}" on Futminna Lodges.`);
   const premium = premiumStats(lodge);
   const full = lodge.units_available === 0;
@@ -110,7 +110,7 @@ export default function LodgeDetail() {
   let contactHref = "";
   if (connect && mine) {
     const link = `${window.location.origin}/connect/${connect.token}`;
-    const text = `Hello ${connect.agent_name}, I'm ${mine.name}. I'm interested in ${title}${lodge.location ? ` (${lodge.location})` : ""}. Here are the details: ${link}`;
+    const text = `Hello ${connect.agent_name}, I'm ${mine.name}. I'm interested in ${title}. Here are the details: ${link}`;
     contactHref = `https://wa.me/${waNumber(connect.agent_whatsapp)}?text=${encodeURIComponent(text)}`;
   }
   const onContact = () => {
@@ -162,7 +162,6 @@ export default function LodgeDetail() {
             </div>
             <h1 className="mt-2.5 font-display text-[1.9rem] leading-tight md:text-[2.3rem]">{title}</h1>
             <p className={muted}>
-              {lodge.lodge_name ? `${lodge.name} · ` : ""}{lodge.location ? `${lodge.location} · ` : ""}
               {lodge.rooms} room{lodge.rooms > 1 ? "s" : ""} · {lodge.interest_count} interested
             </p>
             <CopyLinkButton className="mt-3" url={`${window.location.origin}/lodge/${lodge.id}`} />
@@ -188,10 +187,6 @@ export default function LodgeDetail() {
             ))}
           </dl>
 
-          <Panel>
-            <h3 className="font-display text-lg">What it has</h3>
-            <StatList stats={lodge.stats} />
-          </Panel>
         </div>
 
         <div>
@@ -200,6 +195,11 @@ export default function LodgeDetail() {
             : <div className="grid aspect-[16/10] w-full place-items-center rounded-[14px] bg-[#17302a] text-[0.9rem] text-mint">No footage yet</div>}
         </div>
       </section>
+      
+      <Panel>
+        <h3 className="font-display text-lg">What it has</h3>
+        <StatList stats={lodge.stats} />
+      </Panel>
 
       <section aria-label="Next steps" className="grid gap-5 border-t-2 border-ink pt-7 md:grid-cols-2">
         <Panel className="flex flex-col justify-between gap-4">

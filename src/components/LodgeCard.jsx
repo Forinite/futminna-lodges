@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import AutoVideo from "./AutoVideo.jsx";
 import { Tag, cx } from "./ui.jsx";
-import { naira, lodgeTitle, premiumStats } from "../lib/constants.js";
+import { naira, premiumStats } from "../lib/constants.js";
 
 export default function LodgeCard({ lodge }) {
   const premium = premiumStats(lodge);
@@ -22,10 +22,8 @@ export default function LodgeCard({ lodge }) {
       >
         <AutoVideo src={lodge.video_url} />
         <div className="px-4 pb-4 pt-3.5">
-          <h3 className="font-display text-[1.1rem] leading-tight">{lodgeTitle(lodge)}</h3>
+          <h3 className="font-display text-[1.1rem] leading-tight">{lodge.name}</h3>
           <p className="mt-1 text-[0.92rem] text-muted">
-            {lodge.lodge_name ? `${lodge.name} · ` : ""}
-            {lodge.location ? `${lodge.location} · ` : ""}
             {lodge.rooms} room{lodge.rooms > 1 ? "s" : ""}
           </p>
           <p className="mt-2 text-[0.9rem] text-muted">
