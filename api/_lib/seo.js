@@ -36,7 +36,8 @@ export function homeMeta(count, site) {
 }
 
 export function lodgeMeta(lodge, site) {
-  const title = lodge.rooms ? `${lodge.name} · ${plural(lodge.rooms, "room", "rooms")}` : lodge.name;
+  const where = lodge.location ? ` in ${lodge.location}` : "";
+  const title = `${lodge.name}${where}`;
   const stats = availableStats(lodge);
   const free = Number(lodge.units_available) || 0;
   const total = Number(lodge.units_total) || 0;

@@ -57,6 +57,7 @@ function homeCard(count) {
 
 function lodgeCard(l) {
   const title = l.name;
+  const sub = l.location || "";
   const free = Number(l.units_available) || 0;
   const total = Number(l.units_total) || 0;
   const stats = availableStats(l);
@@ -81,6 +82,7 @@ function lodgeCard(l) {
     box(
       { flexDirection: "column" },
       text({ fontSize: title.length > 22 ? 66 : 84, fontWeight: 700, lineHeight: 1.05 }, clip(title, 36)),
+      sub ? text({ fontSize: 34, color: C.mint, fontWeight: 400, marginTop: 10 }, clip(sub, 60)) : null,
       box(
         { alignItems: "flex-end", marginTop: 26 },
         text({ fontSize: 110, fontWeight: 700, lineHeight: 1 }, naira(l.price_yearly)),

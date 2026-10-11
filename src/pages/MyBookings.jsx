@@ -15,7 +15,7 @@ export default function MyBookings() {
 
   useEffect(() => {
     if (!user) return setRows(null);
-    supabase.from("bookings").select("id, status, created_at, lodges(id, name)")
+    supabase.from("bookings").select("id, status, created_at, lodges(id, name, location)")
       .eq("user_id", user.id).order("created_at", { ascending: false })
       .then(({ data }) => setRows(data ?? []));
   }, [user]);
@@ -40,7 +40,7 @@ export default function MyBookings() {
       <div className="mt-4 grid gap-4">
         {rows?.map((b) => (
           <Link key={b.id} to={`/lodge/${b.lodges.id}`} className="flex flex-wrap items-center gap-4 rounded-[14px] border border-line bg-white p-5 no-underline">
-            <strong>{b.lodges.name}</strong>
+            <strong>{b.lodges.name}{b.lodges.location ? ` · ${b.lodges.location}` : ""}</strong>
             <Tag tone={TONE[b.status]}>{LABELS[b.status]}</Tag>
             <span className="ml-auto text-[0.92rem] text-muted">{new Date(b.created_at).toLocaleDateString("en-NG", { dateStyle: "medium" })}</span>
           </Link>

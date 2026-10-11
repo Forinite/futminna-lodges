@@ -13,7 +13,7 @@ React 18, Vite, Tailwind CSS v4, Supabase. Hosting: Vercel (the `api/` folder is
 
 ## The database is shared with the owner's admin project
 The `supabase/` folder is the **whole backend**, including the admin-side tables and functions, because this site and the admin project use the **same Supabase project**. Nothing in the browser code here can use them: they only work for an account whose email is in the `admins` table. Approving lodges, allowing agent connections, marking sold, managing agents and analytics live in the separate full project.
-If the database is already set up, do nothing here. For a new Supabase project run, in the SQL Editor and in order: `schema.sql` → `v2-migration.sql` → `v3-migration.sql` → `v4-migration.sql` → `v5-migration.sql` → `v6-migration.sql` → `v7-migration.sql` (deploy the site code first) (**edit your admin email near the top of v5 first**; the script refuses to run until you do).
+If the database is already set up, do nothing here. For a new Supabase project run, in the SQL Editor and in order: `schema.sql` → `v2-migration.sql` → `v3-migration.sql` → `v4-migration.sql` → `v5-migration.sql` → `v6-migration.sql` → `v7-migration.sql` (deploy the site code first; see `supabase/MIGRATIONS.md`) (**edit your admin email near the top of v5 first**; the script refuses to run until you do).
 
 ## Run it
 1. `npm install`
@@ -29,3 +29,6 @@ Authentication: Email provider on, "Confirm email" on. URL Configuration: Site U
 ## Notes
 - Contact details shown on every lodge page are the constant in `src/lib/constants.js` (`AGENT`): replace the placeholder phone and WhatsApp numbers.
 - Test a share card by pasting a link into WhatsApp, or open `/api/og` and `/api/og?id=<lodge id>` directly.
+
+## Design
+The Browse and Lodge pages use a NIHUB-inspired look: deep plum + amber, Bai Jamjuree headings, Poppins body, JetBrains Mono labels. Tokens (`plum`, `amber`, `violet`, `ok`, `warn`, fonts `font-bai/pop/jet`) live in `src/index.css`; shared pieces are in `src/components/lodgeUi.jsx`.

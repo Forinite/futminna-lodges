@@ -29,6 +29,22 @@
   --color-mint: #a9c9bc;
   --color-jade: #1f8a66;
 
+  /* NIHUB-inspired palette and type for the Browse and Lodge pages */
+  --font-bai: "Bai Jamjuree", sans-serif;
+  --font-pop: "Poppins", sans-serif;
+  --font-jet: "JetBrains Mono", monospace;
+  --color-plum: #2b1043;
+  --color-plum-2: #1a0a2e;
+  --color-plum-100: #6b5b8a;
+  --color-plum-200: #735f8b;
+  --color-plum-300: #9b8ab0;
+  --color-lav: #f5f0ff;
+  --color-amber: #ffb234;
+  --color-violet: #6a3fa0;
+  --color-lilac: #c084fc;
+  --color-ok: #22c55e;
+  --color-warn: #f97316;
+
   --animate-shimmer: shimmer 1.3s infinite;
   @keyframes shimmer {
     to { background-position: -200% 0; }
@@ -37,3 +53,17 @@
 
 body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); line-height: 1.5; }
 :focus-visible { outline: 3px solid var(--color-premium); outline-offset: 2px; }
+
+/* Gradient headline word and dot-grid backdrop (used in the page heroes) */
+.clarity-text-gradient {
+  background: linear-gradient(120deg, #ffb234 7.74%, #6a3fa0 58.45%, #c084fc 92.26%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dot-grid {
+  background-image: radial-gradient(rgba(43, 16, 67, 0.2) 1.2px, transparent 1.4px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, #000 25%, transparent 78%);
+}

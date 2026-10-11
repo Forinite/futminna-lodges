@@ -35,7 +35,7 @@ function SiteHeader() {
   return (
     <header ref={ref} className="sticky top-0 z-30">
       {user && (
-        <div className="flex min-h-8 items-center gap-4 bg-[#0b1511] px-4 text-[0.8rem] text-[#c3d6cd]">
+        <div className="flex min-h-8 items-center gap-4 bg-plum-2 px-4 text-[0.8rem] text-[#c3d6cd]">
           <span>Signed in as <strong className="font-bold text-white">{user.email}</strong></span>
           <span className="grow" />
           <Link to="/my-bookings" className="text-white">My bookings</Link>
@@ -43,12 +43,12 @@ function SiteHeader() {
           <LinkBtn onClick={signOut}>Sign out</LinkBtn>
         </div>
       )}
-      <div className="flex min-h-15 items-center justify-between bg-ink px-4 py-3.5 text-white">
-        <Link to="/" className="font-display text-[1.35rem] font-extrabold no-underline">Futminna Lodges</Link>
+      <div className="flex min-h-15 items-center justify-between bg-plum px-4 py-3.5 text-white">
+        <Link to="/" className="font-bai text-[1.35rem] font-bold uppercase tracking-[-0.3px] no-underline">Futminna Lodges</Link>
         <div className="flex items-center gap-4">
           <InstallButton />
           {!user && (
-            <button className="min-h-10 cursor-pointer rounded-lg border border-[#6f8a81] px-4 text-[0.85rem] font-bold text-white" onClick={() => setAuthOpen(true)}>Sign in</button>
+            <button className="min-h-10 cursor-pointer rounded-lg border border-white/30 px-4 text-[0.85rem] font-bold text-white" onClick={() => setAuthOpen(true)}>Sign in</button>
           )}
         </div>
       </div>
